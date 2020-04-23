@@ -106,7 +106,7 @@ def run_poseflow(img_dir, out_dir):
         '--imgdir', img_dir,
         '--in_json', alphapose_json,
         '--out_json', out_json,
-        # '--visdir', out_dir,  # Uncomment this to visualize PoseFlow tracks.
+        #'--visdir', out_dir,  # Uncomment this to visualize PoseFlow tracks.
     ]
 
     print('Running: {}'.format(' '.join(cmd)))

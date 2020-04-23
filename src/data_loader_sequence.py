@@ -282,7 +282,7 @@ class SequenceDataLoader(object):
                 has_3d (2x1).
             if self.precomputed_phi, also returns phis (T x 2048)
         """
-        with tf.name_scope(None, 'read_data', [filename_queue]):
+        with tf.name_scope(None, 'read_data', values=[filename_queue]):
             reader = tf.TFRecordReader()
             _, example_serialized = reader.read(filename_queue)
 

@@ -25,5 +25,6 @@ src/external/AlphaPose
 *shell*
 
 
-demo_data
-demo_out
+demo_data/
+demo_output/
+install.sh

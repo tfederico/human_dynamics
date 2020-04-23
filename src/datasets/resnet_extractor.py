@@ -17,7 +17,7 @@ class FeatureExtractor(object):
         self.batch_size = batch_size
         self.img_enc_fn = encoder_resnet
 
-        self.images_pl = tf.placeholder(
+        self.images_pl = tf.compat.v1.placeholder(
             tf.float32,
             shape=(self.batch_size, self.img_size, self.img_size, 3)
         )

@@ -21,7 +21,7 @@ def compute_loss_e_kp_optcam(kp_gt, kp_pred, name=None):
         kp_gt (BxTxKx3): Ground truth kp.
         kp_pred (BxTxKx2): Predicted kp.
     """
-    with tf.name_scope(name, 'loss_e_kp_optcam', [kp_gt, kp_pred]):
+    with tf.name_scope(name, 'loss_e_kp_optcam', values=[kp_gt, kp_pred]):
         # Make into BT x K x 3
         B = kp_gt.shape[0].value
         T = kp_gt.shape[1].value
@@ -47,7 +47,7 @@ def compute_loss_e_kp(kp_gt, kp_pred, name=None):
         kp_pred (NxKx2): Predicted kp.
         name (str).
     """
-    with tf.name_scope(name, 'loss_e_kp', [kp_gt, kp_pred]):
+    with tf.name_scope(name, 'loss_e_kp', values=[kp_gt, kp_pred]):
         kp_gt = tf.reshape(kp_gt, (-1, 3))
         kp_pred = tf.reshape(kp_pred, (-1, 2))
 
@@ -174,7 +174,7 @@ def align_by_pelvis(joints):
         print('I should never be here!!')
         import ipdb; ipdb.set_trace()
         joints = tf.reshape(joints, (-1, 14, 3))
-    with tf.name_scope('align_by_pelvis', [joints]):
+    with tf.name_scope('align_by_pelvis', values=[joints]):
         left_id = 3
         right_id = 2
         pelvis = (joints[:, left_id, :] + joints[:, right_id, :]) / 2.

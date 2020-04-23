@@ -102,7 +102,7 @@ class SMPL(object):
         If get_skin is True, also returns
           - Verts: N x 6890 x 3
         """
-        with tf.name_scope(name, 'smpl_main', [beta, theta]):
+        with tf.name_scope(name, 'smpl_main', values=[beta, theta]):
             num_batch = beta.shape[0].value
 
             # 1. Add shape blend shapes

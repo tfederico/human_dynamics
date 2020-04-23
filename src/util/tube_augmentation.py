@@ -115,7 +115,7 @@ class TubePreprocessor(object):
                          trans, scale, rotate, flip):
         margin = tf.to_int32(self.output_size / 2)
         with tf.name_scope(None, 'preprocess_images',
-                           [image, image_size, label, center]):
+                           values=[image, image_size, label, center]):
             visibility = label[2, :]
             keypoints = label[:2, :]
 
@@ -212,12 +212,12 @@ class TubePreprocessorDriver(object):
         else:
             self.sess = sess
 
-        self.images_pl = tf.placeholder(tf.float32, shape=(None, None, None, 3))
-        self.image_sizes_pl = tf.placeholder(tf.int32, shape=(None, 2))
-        self.labels_pl = tf.placeholder(tf.float32, shape=(None, 3, 25))
-        self.centers_pl = tf.placeholder(tf.int32)
-        self.poses_pl = tf.placeholder(tf.float32, shape=(None, 72))
-        self.gt3ds_pl = tf.placeholder(tf.float32, shape=(None, 14, 3))
+        self.images_pl = tf.compat.v1.placeholder(tf.float32, shape=(None, None, None, 3))
+        self.image_sizes_pl = tf.compat.v1.placeholder(tf.int32, shape=(None, 2))
+        self.labels_pl = tf.compat.v1.placeholder(tf.float32, shape=(None, 3, 25))
+        self.centers_pl = tf.compat.v1.placeholder(tf.int32)
+        self.poses_pl = tf.compat.v1.placeholder(tf.float32, shape=(None, 72))
+        self.gt3ds_pl = tf.compat.v1.placeholder(tf.float32, shape=(None, 14, 3))
 
         self.build_model()
 

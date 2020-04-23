@@ -420,7 +420,7 @@ def read_smpl_data(filename_queue):
         'pose'  : 72-D float
         'shape' : 10-D float
     """
-    with tf.name_scope(None, 'read_smpl_data', [filename_queue]):
+    with tf.name_scope(None, 'read_smpl_data', values=[filename_queue]):
         reader = tf.TFRecordReader()
         _, example_serialized = reader.read(filename_queue)
 
@@ -440,7 +440,7 @@ def read_smpl_data_temporal(filename_queue):
     """
     Parses smpl temporal Example proto.
     """
-    with tf.name_scope(None, 'read_smpl_data_temporal', [filename_queue]):
+    with tf.name_scope(None, 'read_smpl_data_temporal', values=[filename_queue]):
         reader = tf.TFRecordReader()
         _, example_serialized = reader.read(filename_queue)
 
@@ -463,7 +463,7 @@ def decode_jpeg(image_buffer, name=None):
       Returns:
         3-D float Tensor with values ranging from [0, 1).
     """
-    with tf.name_scope(name, 'decode_jpeg', [image_buffer]):
+    with tf.name_scope(name, 'decode_jpeg', values=[image_buffer]):
         # Decode the string as an RGB JPEG.
         # Note that the resulting image contains an unknown height and width
         # that is set dynamically by decode_jpeg. In other words, the height
@@ -497,7 +497,7 @@ def process_tensors(data, N, indices, shape, dtype, default=0, name=None):
     Returns:
         Tensor.
     """
-    with tf.name_scope(name, 'process_tensors', [data]):
+    with tf.name_scope(name, 'process_tensors', values=[data]):
         if dtype:
             data = tf.cast(data, dtype)
         dense_tensor = tf.sparse_tensor_to_dense(data, default_value=default)
@@ -510,7 +510,7 @@ def process_tensors(data, N, indices, shape, dtype, default=0, name=None):
 
 
 def jitter_center(center, trans_max=None, rand_trans=None):
-    with tf.name_scope(None, 'jitter_center', [center, trans_max]):
+    with tf.name_scope(None, 'jitter_center', values=[center, trans_max]):
         if rand_trans is None:
             rand_trans = tf.random_uniform(
                 shape=(2, 1),
@@ -523,7 +523,7 @@ def jitter_center(center, trans_max=None, rand_trans=None):
 
 def jitter_scale(image, image_size, keypoints, center, scale_range=None,
                  scale_factor=None):
-    with tf.name_scope(None, 'jitter_scale', [image, image_size, keypoints]):
+    with tf.name_scope(None, 'jitter_scale', values=[image, image_size, keypoints]):
         if scale_factor is None:
             scale_factor = tf.random_uniform(
                 shape=(1,),
@@ -560,12 +560,12 @@ def pad_image_edge(image, margin):
     def repeat_col(col, num_repeat):
         # col is N x 3, ravels
         # i.e. to N*3 and repeats, then put it back to num_repeat x N x 3
-        with tf.name_scope(None, 'repeat_col', [col, num_repeat]):
+        with tf.name_scope(None, 'repeat_col', values=[col, num_repeat]):
             return tf.reshape(
                 tf.tile(tf.reshape(col, [-1]), [num_repeat]),
                 [num_repeat, -1, 3])
 
-    with tf.name_scope(None, 'pad_image_edge', [image, margin]):
+    with tf.name_scope(None, 'pad_image_edge', values=[image, margin]):
         top = repeat_col(image[0, :, :], margin)
         bottom = repeat_col(image[-1, :, :], margin)
 
@@ -641,7 +641,7 @@ def reflect_pose(pose):
     Input is a 72-Dim vector.
     Global rotation (first 3) is left alone.
     """
-    with tf.name_scope('reflect_pose', [pose]):
+    with tf.name_scope('reflect_pose', values=[pose]):
         """
         # How I got the indices:
         right = [11, 8, 5, 2, 14, 17, 19, 21, 23]
@@ -689,7 +689,7 @@ def reflect_joints3d(joints):
     Assumes input is 14 x 3 (the LSP skeleton subset of H3.6M)
     """
     swap_inds = tf.constant([5, 4, 3, 2, 1, 0, 11, 10, 9, 8, 7, 6, 12, 13])
-    with tf.name_scope('reflect_joints3d', [joints]):
+    with tf.name_scope('reflect_joints3d', values=[joints]):
         joints_ref = tf.gather(joints, swap_inds)
         flip_mat = tf.constant([[-1, 0, 0], [0, 1, 0], [0, 0, 1]], tf.float32)
         joints_ref = tf.transpose(
@@ -711,7 +711,7 @@ def rotate_img(image, keypoints, image_size, max_rad=None, gt3d=None, pose=None,
     gt3d: 14 x 3
     pose: 72,
     """
-    with tf.name_scope('rotate_img', [image, keypoints, gt3d, pose]):
+    with tf.name_scope('rotate_img', values=[image, keypoints, gt3d, pose]):
         if theta is None:
             theta = tf.random_uniform(
                 shape=(1,),

@@ -19,7 +19,7 @@ def batch_orth_proj_idrot(X, camera, name=None):
     camera is N x 3
     same as applying orth_proj_idrot to each N
     """
-    with tf.name_scope(name, 'batch_orth_proj_idrot', [X, camera]):
+    with tf.name_scope(name, 'batch_orth_proj_idrot', values=[X, camera]):
         camera = tf.reshape(camera, [-1, 1, 3], name='cam_adj_shape')
 
         X_trans = X[:, :, :2] + camera[:, :, 1:]
@@ -38,7 +38,7 @@ def batch_orth_proj_optcam(X, X_gt, name=None):
 
     returns proj_x: N x K x 2 and best_cam:[scale, trans]
     """
-    with tf.name_scope(name, 'batch_orth_proj_optcam', [X, X_gt]):
+    with tf.name_scope(name, 'batch_orth_proj_optcam', values=[X, X_gt]):
         best_cam = procrustes2d_vis(X, X_gt)
         best_cam = tf.stop_gradient(best_cam)
         proj_x = batch_orth_proj_idrot(X, best_cam)
@@ -59,7 +59,7 @@ def procrustes2d_vis(X, X_target):
     returns best_cam: N x 3
     """
     assert len(X_target.shape) == 3
-    with tf.name_scope('procrustes2d_vis', [X, X_target]):
+    with tf.name_scope('procrustes2d_vis', values=[X, X_target]):
         # Turn vis into [0, 1]
         vis = tf.cast(X_target[:, :, 2] > 0, tf.float32)
         vis_vec = tf.expand_dims(vis, 2)

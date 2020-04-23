@@ -30,6 +30,7 @@ from src.evaluation.tester import Tester
 from src.util.common import mkdir
 from src.util.smooth_bbox import get_smooth_bbox_params
 
+
 flags.DEFINE_string(
     'vid_path', 'penn_action-2278.mp4',
     'video to run on')

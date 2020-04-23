@@ -23,25 +23,25 @@ class ImageCoder(object):
         self._sess = tf.Session(config=tf.ConfigProto(gpu_options=gpu_options))
 
         # Initializes function that converts PNG to JPEG data.
-        self._png_data = tf.placeholder(dtype=tf.string)
+        self._png_data = tf.compat.v1.placeholder(dtype=tf.string)
         image = tf.image.decode_png(self._png_data, channels=3)
         self._png_to_jpeg = tf.image.encode_jpeg(
             image, format='rgb', quality=100)
 
         # Initializes function that decodes RGB JPEG data.
-        self._decode_jpeg_data = tf.placeholder(dtype=tf.string)
+        self._decode_jpeg_data = tf.compat.v1.placeholder(dtype=tf.string)
         self._decode_jpeg = tf.image.decode_jpeg(
             self._decode_jpeg_data, channels=3)
 
-        self._encode_jpeg_data = tf.placeholder(dtype=tf.uint8)
+        self._encode_jpeg_data = tf.compat.v1.placeholder(dtype=tf.uint8)
         self._encode_jpeg = tf.image.encode_jpeg(
             self._encode_jpeg_data, format='rgb')
 
-        self._decode_png_data = tf.placeholder(dtype=tf.string)
+        self._decode_png_data = tf.compat.v1.placeholder(dtype=tf.string)
         self._decode_png = tf.image.decode_png(
             self._decode_png_data, channels=3)
 
-        self._encode_png_data = tf.placeholder(dtype=tf.uint8)
+        self._encode_png_data = tf.compat.v1.placeholder(dtype=tf.uint8)
         self._encode_png = tf.image.encode_png(self._encode_png_data)
 
     def png_to_jpeg(self, image_data):
